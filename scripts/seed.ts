@@ -1,6 +1,7 @@
-import { categories, tasks } from "../db/schema";
+import { categories, tasks } from "../src/db/schema";
 // import { v4 as createId } from "uuid";
 import { createId } from "@paralleldrive/cuid2";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 const client = new Client({
@@ -24,30 +25,39 @@ const seed = async () => {
   const userId = "user_2iFTbN0LHBc5uKs62sWy2JRzcbv"; // Assuming a single user for simplicity
 
   // Seed categories
-  const categoryData = [
-    { id: createId(), name: "Work", userId },
-    { id: createId(), name: "Personal", userId },
-    { id: createId(), name: "Health", userId },
-    { id: createId(), name: "Shopping", userId },
-    { id: createId(), name: "Miscellaneous", userId },
-  ];
-  await db.insert(categories).values(categoryData);
+  // const categoryData = [
+  //   { id: createId(), name: "Work", userId },
+  //   { id: createId(), name: "Personal", userId },
+  //   { id: createId(), name: "Health", userId },
+  //   { id: createId(), name: "Shopping", userId },
+  //   { id: createId(), name: "Miscellaneous", userId },
+  // ];
+  // await db.insert(categories).values(categoryData);
 
-  // Seed tasks
-  const categoryIds = categoryData.map((category) => category.id);
+  // // Seed tasks
+  // const categoryIds = categoryData.map((category) => category.id);
 
-  const taskData = Array.from({ length: 20 }, () => ({
-    id: createId(),
-    label: `Task ${Math.floor(Math.random() * 100)}`,
-    userId,
-    completed: Math.random() > 0.5,
-    categoryId: categoryIds[Math.floor(Math.random() * categoryIds.length)],
-  }));
-  await db.insert(tasks).values(taskData);
+  // const taskData = Array.from({ length: 20 }, () => ({
+  //   id: createId(),
+  //   label: `Task ${Math.floor(Math.random() * 100)}`,
+  //   userId,
+  //   completed: Math.random() > 0.5,
+  //   categoryId: categoryIds[Math.floor(Math.random() * categoryIds.length)],
+  // }));
+  // await db.insert(tasks).values(taskData);
+  const data = await db
+    .select({
+      id: categories.id,
+      name: categories.name,
+    })
+    .from(categories)
+    .where(eq(categories.userId, userId));
 
-  console.log("Seeding completed!");
+  console.log(data);
 };
 
-seed().catch((error) => {
-  console.error("Error seeding data:", error);
-});
+seed()
+  .catch((error) => {
+    console.error("Error seeding data:", error);
+  })
+  .finally();
