@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { QueryProviders } from "@/components/providers/query-providers";
+import { DialogProvider } from "@/components/providers/dialog-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <DialogProvider />
               {children}
             </ThemeProvider>
           </QueryProviders>

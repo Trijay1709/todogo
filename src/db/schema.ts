@@ -18,7 +18,7 @@ export const tasks = pgTable("tasks", {
   label: text("name").notNull(),
   userId: text("user_id").notNull(),
   completed: boolean("completed").notNull(),
-  // createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   categoryId: text("category_id").references(() => categories.id, {
     onDelete: "set null",
   }),
