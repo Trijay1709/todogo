@@ -33,4 +33,6 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   }),
 }));
 export const insertCategorySchema = createInsertSchema(categories);
-export const insertTaskSchema = createInsertSchema(tasks);
+export const insertTaskSchema = createInsertSchema(tasks).omit({
+  createdAt: true,
+});

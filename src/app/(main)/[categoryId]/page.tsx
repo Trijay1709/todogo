@@ -3,7 +3,9 @@ import { EditCategoryForm } from "@/components/forms/EditCategory/EditCategory";
 import { usecategoryDelete } from "@/components/queries/categories/useCategoryDelete";
 import { useCategoryGetOne } from "@/components/queries/categories/useCategoryGetOne";
 import { useCategoryEdit } from "@/components/queries/categories/useCategoryPatch";
+import { TaskListCategory } from "@/components/Tasks/TaskListCategory";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { insertCategorySchema } from "@/db/schema";
 import { useAuth } from "@clerk/nextjs";
@@ -17,7 +19,7 @@ type Props = {
     categoryId: string;
   };
 };
-// TODO : ADD PAGE STATES
+
 enum PAGE_STATE {
   LIST = "LIST",
   EDIT_CATEGORY = "EDIT_CATEGORY",
@@ -63,7 +65,6 @@ function Page({ params }: Props) {
       {Page_state !== PAGE_STATE.EDIT_CATEGORY ? (
         <div className="pr-8 text-4xl w-full flex justify-between">
           {categoryQuery.data.name}
-          {/* TODO: Add button actions */}
           <Button
             variant="outline"
             className="border-none"
@@ -94,6 +95,8 @@ function Page({ params }: Props) {
           </Button>
         </div>
       )}
+      <Separator className="mt-6" />
+      <TaskListCategory categoryId={categoryQuery.data?.id} />
     </div>
   );
 }
